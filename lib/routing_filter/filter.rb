@@ -26,7 +26,9 @@ module RoutingFilter
 
       def prepend_segment!(result, segment)
         url = result.is_a?(Array) ? result.first : result
-        url.sub!(%r(^(http.?://[^/]*)?(.*))) { "#{$1}/#{segment}#{$2 == '/' ? '' : $2}" }
+        url.sub!(%r(^(http.?://[^/]*)?(.*))) { "#{$1}/#{segment}#{$2 == '/' ? '' : $2}" } unless url.include?("/#{segment}/")
+        Rails.logger.debug url
+        url        
       end
 
       def append_segment!(result, segment)
